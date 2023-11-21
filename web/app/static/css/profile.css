@@ -1,0 +1,23 @@
+.user-image-large {
+    width: 8rem;
+    height: 8rem;
+}
+
+.user-name {
+    font-weight: 500;
+    color: #0A2A42;
+}
+
+.user-email {
+    font-weight: 500;
+    color: #737373;
+}
+
+.section-2-span {
+    font-weight: 500;
+    color: #AFAFAF;
+}
+
+.section-2-btn {
+    background-color: #2B524B;
+}

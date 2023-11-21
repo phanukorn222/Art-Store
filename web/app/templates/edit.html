@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/login.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Art
+{% endblock %}
+
+{% block body %}
+    {% include 'include/navbar.html' %}
+    <div class="container-fluid bg-white p-0 overflow-hidden">
+        <div class="row align-items-center py-4 mx-5">
+            <div class="col-12 col-md-6">
+                <img id="preview-img" src="{{ url_for('static', filename='uploads') }}/{{art.img_url}}" class="h-auto w-100 object-fit-cover img-fluid rounded-4">
+            </div>
+            <div class="col-12 col-md-6">
+                <form method="POST" enctype="multipart/form-data" class="mx-5">
+                    {{ form.csrf_token }}
+                    <div class="row my-3">
+                        <div class="col">
+                            {{ form.title.label(class_="form-label") }}
+                            {{ form.title(class_="input-detail form-control", value_=art.title) }}
+                            {% if form.title.errors %}
+                                <div class="mt-2">
+                                    {% for error in form.title.errors %}
+                                        <div class="alert alert-danger m-0" role="alert">
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                {{ form.price.label(class_="form-label") }}
+                                {{ form.price(class_="input-detail form-control", value_=art.price) }}
+                                {% if form.price.errors %}
+                                    <div class="mt-2">
+                                        {% for error in form.price.errors %}
+                                            <div class="alert alert-danger m-0" role="alert">
+                                                {{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                {{ form.type.label(class_="form-label") }}
+                                {{ form.type(class_="input-detail form-select") }}
+                                {% if form.type.errors %}
+                                    <div class="mt-2">
+                                        {% for error in form.type.errors %}
+                                            <div class="alert alert-danger m-0" role="alert">
+                                                {{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="mb-3">
+                                {{ form.detail.label(class_="form-label") }}
+                                {{ form.detail(class_="input-detail form-control") }}
+                                {% if form.detail.errors %}
+                                    <div class="mt-2">
+                                        {% for error in form.detail.errors %}
+                                            <div class="alert alert-danger m-0" role="alert">
+                                                {{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-auto">
+                            <div class="mb-2">
+                                <input class="btn btn-primary rounded-pill text-white text-center form-control py-2 px-4" type="submit" value="Edit" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %} 
+<script>
+    $("#image-upload").change((event) => {
+        const file = $("#image-upload").prop('files')[0];
+        if(file){
+            $("#text-preview").hide();
+            $("#preview-img").attr("src", URL.createObjectURL(file));
+        }
+    })
+</script>
+{% endblock %}

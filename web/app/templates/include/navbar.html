@@ -1,0 +1,76 @@
+{% block head %}
+<link href="{{ url_for('static', filename='css/navbar.css') }}" rel="stylesheet">
+{% endblock %}
+<nav class="navbar navbar-expand-sm navbar-light mx-0 mx-sm-5 bg-white">
+    <div class="container-fluid p-0">
+        <a class="navbar-brand mx-5 mx-sm-0" href="{{  url_for('index') }}">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="Logo" style="max-width: 12rem;" class="d-inline-block align-text-top">
+        </a>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mx-5 mx-sm-0" id="navbarToggler"> &ensp;&ensp;
+            <ul class="navbar-nav me-auto mb-2 mb-md-0 d-none d-md-flex">
+                <li class="nav-item">
+                    <a class="nav-link {% if request.endpoint == 'shop' %} active {% endif %}" href="{{ url_for('shop') }}">Shop</a>
+                </li>
+                {% if request.endpoint == 'index' %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="#FeaturedArts">Featured Arts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#Aboutus">About us</a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-md-0 align-items-sm-center">
+                {% if not current_user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.endpoint == 'login' %} active {% endif %}" href="{{ url_for('login', next=request.path) }}">Login</a>
+                    </li>
+                    <li class="signup-btn nav-item border border-success rounded-4 px-2">
+                        <a style="color: inherit;" class="nav-link {% if request.endpoint == 'signup' %} active {% endif %}" href="{{ url_for('signup') }}">Sign up</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item align-items-sm-center">
+                        <a class="nav-link {% if request.endpoint == 'profile_favourite' %} active {% endif %}" href="{{ url_for('profile_favourite') }}">Favourite arts</a>
+                    </li>
+                    &ensp;
+                    <li class="nav-item dropdown">
+                        <div class="dropdown" id="img-user-dropdown">
+                            <img class="btn-user rounded-circle p-0 d-none d-sm-block" style="max-width: 3rem;" data-bs-toggle="dropdown" src="{{ current_user.avatar_url }}" />
+                            <button class="btn dropdown-toggle d-sm-none p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img class="rounded-circle" style="max-width: 3rem;" data-bs-toggle="dropdown" src="{{ current_user.avatar_url }}" />
+                                {{ current_user.name }}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow" id="menu-dropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('profile') }}">Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('profile_inactive') }}">Inactive listing</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('profile_contacted') }}">Contacted</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('profile_customer') }}">Customer contacted</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('profile_setting') }}">Setting</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block script %}
+<script>
+   /* $(document).ready(() => {
+        const dropdown = $(".dropdown")
+        dropdown.on("show.bs.dropdown", (event) => {
+            $("#menu-dropdown").fadeIn();
+        })
+
+        dropdown.on("hide.bs.dropdown", (event) => {
+            $("#menu-dropdown").hide();
+        })
+    })*/
+</script> 
+{% endblock %}

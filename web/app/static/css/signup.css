@@ -1,0 +1,23 @@
+.signup-button {
+    background: rgba(105, 185, 242, 1);
+}
+
+.signup-button:hover {
+    background: rgb(80, 163, 223);
+}
+
+h1 {
+    font-weight: 700; 
+    font-size: 32px;
+    color:#0A2A42;
+}
+
+label {
+    font-weight: 500;
+}
+
+.input-detail {
+    background: rgba(217, 217, 217, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}

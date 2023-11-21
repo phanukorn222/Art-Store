@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/signup.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Signup
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+        {% include 'include/auth-navbar.html' %}
+        <div class="row flex-grow-1 align-items-center justify-content-center">
+            <div class="col-12 col-sm-9 col-md-7 col-lg-6 col-xl-5 col-xxl-4">
+                <div class="shadow rounded-5 bg-body">
+                    <div class="text-center py-4">
+                        <h1>Sign up</h1>
+                    </div>
+                    <div class="mx-5">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages[0] }}. Go to <a class="text-decoration-none" href="{{ url_for('login') }}">login page</a>.
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <form method="POST" class="mx-5">
+                        {% include 'include/google-button.html' %}
+                        {{ form.csrf_token }}
+                        <hr class="hr" />
+                        <div class="row mb-3">
+                            <div class="col">
+                                {{ form.name.label(class_="form-label") }}
+                                {{ form.name(class_="input-detail form-control", placeholder="John Doe") }}
+                                {% if form.name.errors %}
+                                    <div class="mt-2">
+                                        {% for error in form.name.errors %}
+                                            <div class="alert alert-danger m-0" role="alert">
+                                                {{ error }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    {{ form.email.label(class_="form-label") }}
+                                    {{ form.email(class_="input-detail form-control", placeholder="example@example.com") }}
+                                    {% if form.email.errors %}
+                                        <div class="mt-2">
+                                            {% for error in form.email.errors %}
+                                                <div class="alert alert-danger m-0" role="alert">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3">
+                                    {{ form.password.label(class_="form-label") }}
+                                    {{ form.password(class_="input-detail form-control", placeholder="********") }}
+                                    {% if form.password.errors %}
+                                        <div class="mt-2">
+                                            {% for error in form.password.errors %}
+                                                <div class="alert alert-danger m-0" role="alert">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-2">
+                                    <input class="signup-button rounded-pill text-white text-center form-control py-2" type="submit" value="Sign up" />
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="pb-4">
+                        <p class="text-center">Already have an account? <a href="{{ url_for('login') }}" class="text-decoration-none">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

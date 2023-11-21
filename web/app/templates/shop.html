@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/shop.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Shop
+{% endblock %}
+
+{% block body %}
+    {% include 'include/navbar.html' %}
+    <div class="container-fluid bg-white p-0 overflow-hidden">
+        <section class="mx-5">
+            <div class="rounded-4 text-center py-5" style="background-image: url('static/img/shop-background.svg'); background-position: center; background-repeat: no-repeat; background-size: cover">
+                <h1 class="section-1-h1">Artwork for everyone</h1>
+                <p class="section-1-p">Our free platform connects artists with art enthusiasts worldwide, 
+                    <br> allowing you to easily sell your unique artwork and reach a wider audience.</p>
+                <a class="rounded-pill section-1-button text-decoration-none text-white px-4 py-2 fs-4 mt-2" href="{{ url_for('create_art') }}">Create</a>
+            </div>
+        </section>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <section class="mx-5 my-2">
+                    <div class="alert alert-danger" role="alert">
+                        {{ messages[0] }}
+                    </div>
+                </section>
+            {% endif %}
+        {% endwith %}
+        <section class="mx-5 my-2">
+            <div class="row gy-2">
+                <div class="col-12 col-md-6">
+                    <form id="filter-from" method="POST" action="/shop">
+                        {{ form_filter.csrf_token }}
+                        {{ form_filter.type(class_="input-detail form-select w-100 w-md-75", placeholder_="Choose one thing") }}
+                    </form>
+                </div>
+                <div class="col-12 col-md-6">
+                    <form id="search-from" method="POST" action="/shop">
+                        {{ form_search.csrf_token }}
+                        <div class="input-group mb-3">
+                            {{ form_search.search(class_="input-detail form-control", placeholder_="Search for arts you like") }}
+                            <button class="btn btn-primary" type="button" id="btn-search">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <div id="arts">
+            <section class="mx-5 mb-4">
+                <!-- ลบ w-75 ออกถ้าอยากได้ใหญ่ -->
+                <div class="row gy-5">
+                    {% if pagination.items %}
+                        {% for art in pagination.items %}
+                            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                {% if current_user.is_authenticated %}
+                                    {% if FavouriteArt.query.filter_by(user_id=current_user.id, art_id=art.id).first() %}
+                                        {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, favourite=True, id=art.id %}
+                                            {% include "include/card.html" %}
+                                        {% endwith %}
+                                    {% else %}
+                                        {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, id=art.id %}
+                                            {% include "include/card.html" %}
+                                        {% endwith %}
+                                    {% endif %}
+                                {% else %}
+                                    {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, id=art.id %}
+                                        {% include "include/card.html" %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="section-2-span text-center fs-5">No items to display.</span>
+                    {% endif %}
+                </div>
+            </section>
+            {% if pagination.items %}
+                <section class="my-5">
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <nav aria-label="pagibation">
+                                <ul class="pagination">
+                                    {% if pagination.has_prev %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ url_for('shop', page=pagination.prev_num) }}">Previous</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link">Previous</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for number in pagination.iter_pages() %}
+                                        {% if pagination.page != number %}
+                                            <li class="page-item"><a class="page-link" href="{{ url_for('shop', page=number) }}">{{ number }}</a></li>
+                                        {% else %}
+                                            <li class="page-item active" aria-current="page">
+                                                <a class="page-link">{{ number }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if pagination.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ url_for('shop', page=pagination.next_num) }}">Next</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/like.js') }}"></script>
+<script>
+    $(document).ready(() => {
+        $("#btn-search").click(() => {
+            $("#search-from").submit();
+        });
+    
+        $("body").on("submit", '#search-from', function (e) { 
+            e.preventDefault();
+            const action = $(this).attr('action')
+            const formData = $(this).serialize();
+            const searchData = $("#search").val();
+            const filterData = $("select").val();
+            if (searchData){
+                $.post(`${action}?search=${searchData}&filter=${filterData}`, formData, (data) => {
+                    $("#arts").html(data?.template)
+                });
+            }else{
+                $.post(`${action}?filter=${filterData}`, formData, (data) => {
+                    $("#arts").html(data?.template)
+                })
+            }
+        });
+
+        $('select').on('change', function() {
+            $("#search-from").submit();
+        });
+    });
+</script>
+{% endblock %}

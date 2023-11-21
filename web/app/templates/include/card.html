@@ -1,0 +1,29 @@
+{% block head %}
+<link href="{{ url_for('static', filename='css/card.css') }}" rel="stylesheet">
+{% endblock %}
+<div id="card" class="card rounded-4 h-100 position-relative shadow">
+    {% if not current_user.is_authenticated %}
+        <img src="{{ url_for('static', filename='uploads') }}/{{img_url}}" class="h-100 w-auto object-fit-cover card-img-top rounded-4 px-1 py-1">
+    {% else %}
+        {% if request.endpoint != 'index' %}
+            <form class="like-form" action="{{ url_for('profile_favourite') }}" method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                <input name="art_id" id="art_id" type="hidden" value="{{id}}" />
+                {% if favourite is defined and favourite %}
+                    <a class="heart-btn-card heart-active position-absolute opacity-75 badge bg-body-secondary rounded-circle p-3" href="javascript:void(0)"><i style="font-size:large;" class="bi bi-heart-fill"></i></a>
+                {% else %}
+                    <a class="heart-btn-card position-absolute opacity-75 badge rounded-circle bg-body-secondary p-3" href="javascript:void(0)"><i style="font-size:large;" class="bi bi-heart"></i></a>
+                {% endif %}
+            </form>
+        {% endif %}
+        <img src="{{ url_for('static', filename='uploads') }}/{{img_url}}" class="h-100 w-auto object-fit-cover card-img-top rounded-4 px-2 py-2">
+    {% endif %}
+    <div class="card-body d-flex flex-column ">
+        <h5 class="card-title fs-3 m-0">{{ title }}</h5>
+        <p class="card-text fs-5 m-0"><i class="bi bi-person me-1"></i><span>{{ user.name }}</span></p>
+        <p class="card-text-price fs-3 mt-2 mb-2">฿ {{ price }}</p>
+        <div class="text-center">
+            <a class="d-inline-block w-100 btn-view-details w-100 fs-4 rounded-3 py-2 text-decoration-none fw-normal" href="{{ url_for('art', id=id) }}">ดูรายละเอียด</a>
+        </div>
+    </div>
+</div>

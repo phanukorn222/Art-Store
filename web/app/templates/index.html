@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/scrolling.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block body %}
+    {% include 'include/navbar.html' %}
+    <div class="container-fluid bg-white p-0 overflow-hidden">
+        <section class="mx-5">
+            <div class="row align-items-center">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6 d-none d-lg-block">
+                    <img src="{{ url_for('static', filename='img/home-arts.svg') }}" class="img-fluid w-auto" />
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <div class="row" id="homeText">
+                        <div class="col-auto">
+                            <h1 class="text-2">Artwork for everyone</h1>
+                            <h6 class="text-3 fs-5" id="text-home">
+                                Welcome to our online artwork shop, where art and wonderful come together! We offer a carefully curated collection of original artworks from talented artists around the world. 
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="row my-4" id="bottom-shop">
+                        <div class="col-auto">
+                            <a class="btn-shop-now rounded-pill text-white py-3 px-4 text-decoration-none" href="{{ url_for('shop') }}">Shop now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </section>
+        <section id ="FeaturedArts"class="mt-5 d-none d-md-block section-2 scroll">
+            <div class="m-2 p-5" id="items">
+                <div class="rounded-4 p-5 green-box">
+                    <div class="row align-items-start">
+                        <div class="col-md-12 col-lg-8 me-auto">
+                            <div>
+                                <img src="{{ url_for('static', filename='img/featured-arts.svg') }}" class="w-50 h-50" />
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 text-center text-lg-end mt-2 mt-lg-0">
+                            <a href="{{ url_for('shop') }}" class="view-all text-white">View all <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        {% if arts %}
+                            <div class="swiper-container position-relative">
+                                <div class="wrap-overflow overflow-hidden h-100">
+                                    <div class="swiper mySwiper h-100">
+                                        <div class="swiper-wrapper">
+                                            {% for art in arts %}
+                                                <div class="swiper-slide">
+                                                    {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, id=art.id %}
+                                                        {% include "include/card.html" %}
+                                                    {% endwith %}
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="swiper-button-prev text-white"></div>
+                                <div class="swiper-button-next text-white"></div>
+                            </div>
+                        {% else %}
+                            <h6 class="text-3 fs-5 text-white text-center" id="text-home">No items to display.</h6>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="Aboutus" class="mx-5 my-2 scroll">
+            <div class="row align-items-start pb-5" id="items">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <div class="row" id="aboutUs">
+                        <div class="col-auto">
+                            <h1 class="about">About us</h1>
+                            <h6 class="fs-5 about-text" id="text-about">
+                                We are developers who want to create a platform for trading artworks with people around the world. 
+                                Our goal is to provide you with a space to showcase your art and create value from your creations. 
+                                Additionally, you can also purchase artworks that you love. Join us and discover a community of artists and art lovers who share the same passion for creativity.
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                    <img src="{{ url_for('static', filename='img/teams.svg') }}" class="img-fluid w-auto d-none d-lg-block" />
+                </div>
+            </div>
+        </section>
+        <section class="text-center py-3 text-white section-3">
+            <div class="fs-5">
+                <i class="bi bi-github"></i>
+                <span class="fs-5 contact">Contact Us</span>
+            </div>
+            <ul class="list-group">
+                <li class="fs-5">
+                    <a href="https://github.com/themes12" target="_blank" class="text-decoration-none" id="github">themes12</a>
+                </li>
+                <li class="fs-5">
+                    <a href="https://github.com/phanukorn222" target="_blank" class="text-decoration-none" id="github">phanukorn222</a>
+                </li>
+                <li class="fs-5">
+                    <a href="https://github.com/platoo12" target="_blank" class="text-decoration-none" id="github">platoo12</a>
+                </li>
+            </ul>
+        </section>
+    </div>
+{% endblock %} 
+{% block script %}
+<script>
+    $(document).ready(function () {
+        const swiper = new Swiper(".mySwiper", {
+            effect: "cards",
+            breakpoints: {
+                // when window width is >= 320px
+                0: {
+                    cardsEffect: {
+                        perSlideRotate: 0,
+                        perSlideOffset: 0,
+                        rotate: false
+                    },
+                },
+                // when window width is >= 480px
+                1200: {
+                    initialSlide: 1,
+                    cardsEffect: {
+                      perSlideRotate: 0,
+                      perSlideOffset: 85,
+                      rotate: false
+                    },
+                },
+            },
+            centeredSlides: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    })
+</script>
+{% endblock %}

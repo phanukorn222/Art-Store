@@ -1,0 +1,78 @@
+.heart-btn-card {
+    background: transparent;
+    top: 0.5rem;
+    right: 0.5rem;
+    transition: all .2s ease-in-out;
+    color: #737373;
+}
+
+.heart-btn-card:hover {
+    transform: scale(1.1);
+}
+
+.heart-active {
+    color: #dc3545;
+}
+
+.art-title {
+    color: #545454;
+    font-weight: 600;
+}
+
+.art-owner {
+    font-weight: 400;
+    color: #737373;
+}
+
+.art-owner > a {
+    text-decoration: none;
+    color: #135348 !important;
+    font-weight: 500 !important;
+}
+
+.art-owner > a:hover {
+    text-decoration: underline;
+}
+
+.art-favourite-count {
+    font-weight: 400;
+    color: #737373
+}
+
+.art-price {
+    color: #0A2A42;
+    font-weight: 600;
+}
+
+.art-contact-btn {
+    background-color: #44A0E2;
+}
+
+.art-contact-btn:hover {
+    background-color: #3a91d0;
+}
+
+.type-tile {
+    color: #3C3C3C;
+    font-weight: 600;
+}
+
+.type-text {
+    color: #737373;
+    font-weight: 400;
+}
+
+.date-text {
+    color: #AFAFAF;
+    font-weight: 400;
+}
+
+.edit-btn {
+    font-weight: 500;
+}
+
+.title-table {
+    font-weight: 500;
+    color: #989898;
+}
+

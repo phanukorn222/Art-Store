@@ -1,0 +1,23 @@
+.input-detail {
+    background-color: rgba(217, 217, 217, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+.login-button {
+    background: #04c752;
+}
+
+.login-button:hover {
+    background: #03aa46;
+}
+
+h1 {
+    font-weight: 700; 
+    font-size: 32px;
+    color: #0A2A42;
+}
+
+label {
+    font-weight: 500;
+}

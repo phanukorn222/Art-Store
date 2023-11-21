@@ -1,0 +1,7 @@
+{% block head %}
+<link href="{{ url_for('static', filename='css/google-button.css') }}" rel="stylesheet">
+{% endblock %}
+<a class="text-center form-control py-2 text-decoration-none google-signup" href="{{ url_for('google') }}">
+    <img class="me-2 google-img" src="static/img/google.svg" />
+    <span>{% if request.endpoint == 'signup' %}Sign up{%  elif request.endpoint == 'login' %}Login{% endif %} with Google</span>
+</a>

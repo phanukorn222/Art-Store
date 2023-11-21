@@ -1,0 +1,30 @@
+.section-1-h1 {
+    color: #2B524B;
+    font-weight: 700;
+}
+
+.section-1-p {
+    color: #0A2A42;
+    font-weight: 400;
+}
+
+.section-1-button {
+    background-color: #2B524B;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.section-1-button:hover {
+    background-color: #1f413a;
+}
+
+.section-2-span {
+    font-weight: 500;
+    color: #AFAFAF;
+}
+
+.input-detail {
+    background-color: rgba(217, 217, 217, 0.1);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}

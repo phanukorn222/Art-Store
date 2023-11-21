@@ -1,0 +1,47 @@
+.card {
+    background: #F9F9F9;
+}
+
+.card-title {
+    color: #545454;
+    font-weight: 600;
+}
+
+.card-text {
+    color: #737373;
+    font-weight: 500;
+}
+
+.card-text-price {
+    color: #0A2A42;
+    font-weight: 600;
+}
+
+.btn-view-details {
+    background-color: #DFDFDF;
+    color: #737373;
+    font-weight: 500;
+    transition: .3s;
+}
+
+.btn-view-details:hover {
+    background-color: #cdcdcd;
+    color: #737373;
+    font-weight: 500;
+}
+
+.heart-btn-card {
+    background: transparent;
+    top: 0.7rem;
+    right: 0.7rem;
+    transition: all .2s ease-in-out;
+    color: #737373;
+}
+
+.heart-btn-card:hover {
+    transform: scale(1.05);
+}
+
+.heart-active {
+    color: #dc3545;
+}

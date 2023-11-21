@@ -1,0 +1,29 @@
+.nav-item {
+    font-weight: 600;
+    color: #0A2A42;
+}
+
+.heart-btn {
+    transition: all .2s ease-in-out;
+}
+
+.heart-btn:hover {
+    transform: scale(1.1);
+    color: red;
+}
+
+.signup-btn {
+    transition: all .1s ease-in-out;
+}
+
+.signup-btn:hover {
+    background-color: #1f423b;
+    color: white;
+}
+.navbar .navbar-nav .btn-user{
+    transition: 0.7s;
+}
+.navbar .navbar-nav .btn-user:hover{
+    transform: scale(1.025);
+    filter: drop-shadow(0 0 0.2rem gray);
+}

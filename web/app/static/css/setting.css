@@ -1,0 +1,8 @@
+.save-button {
+    background: #04c752;
+    transition: .3s;
+}
+
+.save-button:hover {
+    background: #03aa46;
+}

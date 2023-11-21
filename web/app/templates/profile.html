@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<link href="{{ url_for('static', filename='css/shop.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/profile.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/table.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block body %}
+    {% include 'include/navbar.html' %}
+    <div class="container-fluid bg-white p-0 overflow-hidden">
+        <section class="mx-5">
+            <div class="rounded-4 py-5">
+                <div class="container">
+                    <div class="row align-items-center justify-content-center">
+                        {% if user %}
+                            <div class="col-auto">
+                                <img class="user-image-large img-fluid rounded-circle" src="{{ user.avatar_url }}" />
+                            </div>
+                            <div class="col-auto">
+                                <h3 class="user-name">{{ user.name }}</h3>
+                                <p class="user-email m-0 text-break">{{ user.email }}</p>
+                                <a class="btn btn-success rounded-pill mt-2" href="{{ url_for('profile_inactive', user_email=user.email) }}">Sold items</a>
+                            </div>
+                        {% else %}
+                            <div class="col-auto">
+                                <img class="user-image-large img-fluid rounded-circle" src="{{ current_user.avatar_url }}" />
+                            </div>
+                            <div class="col-auto">
+                                <h3 class="user-name">{{ current_user.name }}</h3>
+                                <p class="user-email m-0 text-break">{{ current_user.email }}</p>
+                                <a class="btn btn-success rounded-pill mt-2" href="{{ url_for('profile_inactive') }}">Sold items</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="mx-5 my-2">
+            <div class="row gy-2 fs-4">
+                <div class="col-12 col-sm-6 text-center text-sm-start">
+                    {% if request.endpoint == 'profile' %}
+                    <span class="section-2-span">Active listings</span>
+                    {% elif request.endpoint == 'profile_inactive' %}
+                    <span class="section-2-span">Inctive listings</span>
+                    {% elif request.endpoint == 'profile_contacted' %}
+                    <span class="section-2-span">Contacted</span>
+                    {% elif request.endpoint == 'profile_customer' %}
+                    <span class="section-2-span">Customer</span>
+                    {% endif %}
+                </div>
+                {% if not user and not request.endpoint == 'profile_contacted' %}
+                <div class="col-12 col-sm-6 text-center text-sm-end">
+                    <a class="btn btn-success rounded-pill text-white px-3 py-2 fs-4" href="{{ url_for('create_art') }}">Create</a>
+                </div>
+                {% endif %}
+            </div>
+        </section>
+        <section class="mx-5 my-4">
+            <!-- ลบ w-75 ออกถ้าอยากได้ใหญ่ -->
+            {% if not request.endpoint == 'profile_customer' %}
+                <div class="row gy-5">
+                    {% if pagination.items %}
+                        {% for art in pagination.items %}
+                            <div class="col-sm-6 col-md-4 col-lg-3 col-xl-3">
+                                {% if current_user.is_authenticated %}
+                                    {% if request.endpoint == 'profile' %}
+                                        {% if FavouriteArt.query.filter_by(user_id=current_user.id, art_id=art.id).first() %}
+                                            {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, favourite=True, id=art.id %}
+                                                {% include "include/card.html" %}
+                                            {% endwith %}
+                                        {% else %}
+                                            {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, id=art.id %}
+                                                {% include "include/card.html" %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    {% elif request.endpoint == 'profile_contacted' %}
+                                        {% if FavouriteArt.query.filter_by(user_id=current_user.id, art_id=art.art.id).first() %}
+                                            {% with img_url=art.art.img_url, title=art.art.title, user=art.art.user, price=art.art.price, favourite=True, id=art.art.id %}
+                                                {% include "include/card.html" %}
+                                            {% endwith %}
+                                        {% else %}
+                                            {% with img_url=art.art.img_url, title=art.art.title, user=art.art.user, price=art.art.price, id=art.art.id %}
+                                                {% include "include/card.html" %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    {% elif request.endpoint == 'profile_inactive' %}
+                                        {% if FavouriteArt.query.filter_by(user_id=current_user.id, art_id=art.id).first() %}
+                                            {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, favourite=True, id=art.id %}
+                                                {% include "include/card.html" %}
+                                            {% endwith %}
+                                        {% else %}
+                                            {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, id=art.id %}
+                                                {% include "include/card.html" %}
+                                            {% endwith %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    {% with img_url=art.img_url, title=art.title, user=art.user, price=art.price, id=art.id %}
+                                        {% include "include/card.html" %}
+                                    {% endwith %}
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <span class="section-2-span text-center fs-5">No items to display.</span>
+                    {% endif %}
+                </div>
+            {% else %}
+            <div class="row gy-5">
+                {% if art_objects %}
+                    <div class="container-fluid">
+                        <div class="row align-items-center py-4 mx-5 justify-content-center">
+                            {% for art in art_objects %}
+                                <span class="section-2-span text-black fs-5 p-0"><a>{{ art.title }}</a></span>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Art</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for buyer in art.buyers %}
+                                            <tr>
+                                                <th scope="row">{{ loop.index }}</th>
+                                                <td>{{ buyer.user.name }}</td>
+                                                <td>{{ buyer.user.email }}</td>
+                                                <td><a class="btn btn-primary" href="{{ url_for('art', id=buyer.art.id ) }}">Go</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% else %}
+                    <span class="section-2-span text-center fs-5">No items to display.</span>
+                    {% endif%}
+                </div>
+            {% endif %}
+            
+        </section>
+        {% if not request.endpoint == 'profile_customer' %}
+            {% if pagination.items %}
+                <section class="my-5">
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <nav aria-label="pagibation">
+                                <ul class="pagination">
+                                    {% if pagination.has_prev %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ url_for('profile', page=pagination.prev_num) }}">Previous</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link">Previous</a>
+                                        </li>
+                                    {% endif %}
+                                    {% for number in pagination.iter_pages() %}
+                                        {% if pagination.page != number %}
+                                            <li class="page-item"><a class="page-link" href="{{ url_for('profile', page=number) }}">{{ number }}</a></li>
+                                        {% else %}
+                                            <li class="page-item active" aria-current="page">
+                                                <a class="page-link">{{ number }}</a>
+                                            </li>
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if pagination.has_next %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ url_for('profile', page=pagination.next_num) }}">Next</a>
+                                        </li>
+                                    {% else %}
+                                        <li class="page-item disabled">
+                                            <a class="page-link">Next</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </section>
+            {% endif %}
+        {% endif %}
+    </div>
+{% endblock %}
+{% block script %}
+<script src="{{ url_for('static', filename='js/like.js') }}"></script>
+{% endblock %}
